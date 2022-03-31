@@ -1,0 +1,81 @@
+<!-- This will trigger show inspection types modal for user to view inspection types -->
+<button
+  class="btn btn-lg btn-secondary float-end m-2"
+  (click)="open(inspectiontypes)"
+>
+  Show Inspection Types
+</button>
+
+<!-- This will trigger add inspections modal for user to view inspection types -->
+<button
+  class="btn btn-lg btn-primary float-end m-2"
+  (click)="modalAdd(addinspection)"
+>
+  Add Inspection
+</button>
+
+<!-- This is the table that will show the data -->
+<table class="table table-striped">
+  <thead>
+    <th>Id</th>
+    <th>Inspection Type</th>
+    <th>Status</th>
+    <th>Comments</th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of inspectionList$ | async">
+      <td>{{ item.id }}</td>
+      <!-- <td>{{ item.inspectionTypeId }}</td> -->
+      <td>{{ inspectionTypesMap.get(item.inspectionTypeId) }}</td>
+      <td>{{ item.status }}</td>
+      <td>{{ item.comments }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Add new inspection modal -->
+<!-- This will open the add-edit component which contains a form -->
+<ng-template #addinspection let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{ modalTitle }}</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <app-add-edit-inspection
+      [inspection]="inspection"
+      *ngIf="activateAddEditInspectionComponent"
+    ></app-add-edit-inspection>
+  </div>
+</ng-template>
+
+<!-- Show inspection types modal -->
+<ng-template #inspectiontypes let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Inspection Types</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="mb-3">
+        <ul>
+          <!-- This will produce a list of all the inspection types with their number and associated name -->
+          <li *ngFor="let type of inspectionTypesList$ | async">
+            {{ type.id }} - {{ type.inspectionName }}
+          </li>
+        </ul>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<hr />
